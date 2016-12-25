@@ -1,5 +1,5 @@
 const getIns = require('./utils/disassembler').getIns
-const draw = require('./utils/draw')
+const display = require('./utils/display')
 
 const initMem = rom => {
   const mem = new Uint8Array(0xFFF)
@@ -40,7 +40,7 @@ const ops = {
   // 00E0 - CLS
   // Clear the display.
   '00E0': (ins, c8) => {
-    console.log('Clear Display')
+    display.clear()
     c8.PC += 2
     return c8
   },
@@ -218,7 +218,7 @@ const ops = {
   // set VF = collision.
   'Dxyn': (ins, c8) => {
     let [, , x, y, n] = ins
-    c8.V[0xF] = draw(x, y, n, c8)
+    c8.V[0xF] = display.draw(c8.V[x], c8.V[y], n, c8)
     c8.PC += 2
     return c8
   },
@@ -226,7 +226,7 @@ const ops = {
   // Skip next instruction if key with the value of Vx is pressed.
   'Ex9E': (ins, c8) => {
     let [, , x] = ins
-    if (!c8.KEYS[c8.V[x]]) c8.PC += 4
+    if (c8.KEYS[c8.V[x]]) c8.PC += 4
     else c8.PC += 2
     return c8
   },
@@ -234,7 +234,7 @@ const ops = {
   // Skip next instruction if key with the value of Vx is not pressed.
   'ExA1': (ins, c8) => {
     let [, , x] = ins
-    if (c8.KEYS[c8.V[x]]) c8.PC += 4
+    if (!c8.KEYS[c8.V[x]]) c8.PC += 4
     else c8.PC += 2
     return c8
   },
@@ -320,9 +320,10 @@ const ops = {
   }
 }
 
-const run = (rom, c8, speed) => {
-  setInterval(() => {
-    let loops = 100
+
+const run = (rom, c8, conf) => {
+  function mainLoop () {
+    let loops = 5
     c8.DELAY = Math.max(0, c8.DELAY - 1)
     while (loops > 0) {
       let ins = getIns(read(c8.MEM, c8.PC))
@@ -338,17 +339,19 @@ const run = (rom, c8, speed) => {
           SP: c8.SP,
           STACK: c8.STACK
         })
-        throw 'End loop'
+        throw e
       }
       loops--
     }
-  }, (1000 / 60) / speed)
+    requestAnimationFrame(mainLoop)
+  }
+  requestAnimationFrame(mainLoop)
 }
 
 module.exports = {
   initMem,
   ops,
-  load (rom) {
+  load (rom, conf) {
     const c8 = {
       MEM: initMem(rom),
       V: new Uint8Array(16),
@@ -360,6 +363,8 @@ module.exports = {
       DELAY: 0x00,
       SOUND: 0x00
     }
-    run(rom, c8, 1)
+    display.init(conf)
+    if (typeof window !== 'undefined') window.KEYS = c8.KEYS
+    run(rom, c8, conf)
   }
 }

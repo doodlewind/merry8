@@ -1,8 +1,8 @@
 {
-  "name": "chip8-emu",
-  "description": "chip8 emulator demo",
-  "version": "0.0.1",
-  "keywords": [],
+  "name": "merry8",
+  "description": "Chip-8 emulator for web.",
+  "version": "0.1.0",
+  "keywords": ["chip-8", "emulator", "interpreter"],
   "scripts": {
     "dev": "webpack --watch",
     "prod": "webpack -p"
@@ -15,5 +15,5 @@
     "babel-preset-es2015": "^6.18.0",
     "webpack": "^1.13.3"
   },
-  "main": "app/main.js"
+  "main": "app/index.js"
 }
