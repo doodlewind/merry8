@@ -1,3 +1,4 @@
+const isBrowser = (typeof window !== 'undefined')
 const getIns = require('./utils/disassembler').getIns
 const display = require('./utils/display')
 
@@ -343,9 +344,13 @@ const run = (rom, c8, conf) => {
       }
       loops--
     }
-    requestAnimationFrame(mainLoop)
+    if (isBrowser) requestAnimationFrame(mainLoop)
   }
-  requestAnimationFrame(mainLoop)
+  if (isBrowser) {
+    requestAnimationFrame(mainLoop)
+  } else {
+    setInterval(() => mainLoop(), 1e3 / 60)
+  }
 }
 
 module.exports = {

@@ -13,6 +13,7 @@ To test cpu instructions, move to project root path and run `node test`.
 
 
 ## Changelog
+* `0.2.0` Migrate view layer to canvas.
 * `0.1.0` Implement interpreter and GUI with basic PONG support.
 
 

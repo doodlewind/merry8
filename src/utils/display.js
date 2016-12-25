@@ -1,3 +1,4 @@
+const isBrowser = (typeof window !== 'undefined')
 let _conf = {
   el: '#app',
   width: 500,
@@ -7,41 +8,34 @@ let _conf = {
 let scr = Array.from({ length: 64 }, row => {
   return Array.from({ length: 32 }, col => 0)
 })
-
-const color = pixel => pixel ? 'white' : 'black'
+let ctx = null
 
 const clear = () => scr = scr.map(row => row.map(col => 0))
 
-const renderStr = () => {
-  let str = '\n'
-  for (let j = 0; j < 32; j++) {
-    str += `<div class="${_conf.prefix}-row">\n`
-    for (let i = 0; i < 64; i++) {
-      str += `  <div style="background-color: ${color(scr[i][j])}"></div>\n`
-    }
-    str += '</div>\n'
-  }
-  return str
+const renderCanvas = () => {
+  let pLen = _conf.width / 64
+  scr.forEach((row, i) => row.forEach((col, j) => {
+    ctx.fillStyle = col ? 'white' : 'black'
+    ctx.fillRect(i * pLen, j * pLen, pLen, pLen)
+  }))
 }
 
 const init = (conf = {}) => {
   if (typeof window !== 'undefined') {
     _conf = Object.assign(_conf, conf)
     const style = document.createElement('style')
-    document.querySelector(conf.el)
     document.head.appendChild(style)
-    style.sheet.insertRule(`.${_conf.prefix}-row {
+    style.sheet.insertRule(`canvas {
       margin: auto;
-      display: flex;
-      align-items: space-between;
+      display: block;
       width: ${_conf.width}px;
-      height: ${_conf.width / 64}px;
+      height: ${_conf.width / 2}px;
     }`, 0)
-    style.sheet.insertRule(`.${_conf.prefix}-row > div {
-      flex-grow: 1;
-      height: ${_conf.width / 64}px;
-    }`, 0)
-    document.querySelector(_conf.el).innerHTML = renderStr()
+    const canvas = document.querySelector(conf.el)
+    canvas.setAttribute('width', `${_conf.width}px`)
+    canvas.setAttribute('height', `${_conf.width / 2}px`)
+    ctx = canvas.getContext('2d')
+    renderCanvas()
   } else {
     console.log('Node ENV not supported')
   }
@@ -58,11 +52,8 @@ const draw = (x, y, n, c8) => {
       scr[_x - 1][_y] = scr[_x - 1][_y] ^ (pixels[j] >> (7 - i) & 1)
     }
   }
-  if (typeof window !== 'undefined') {
-    document.querySelector(_conf.el).innerHTML = renderStr()
-  } else {
-    console.log(`Drawing at (${x}, ${y}) with ${n} bytes`)
-  }
+  if (isBrowser) renderCanvas()
+  else console.log(`Drawing at (${x}, ${y}) with ${n} bytes`)
   // return if collision exists
   // debugger
   return false
