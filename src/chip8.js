@@ -1,6 +1,6 @@
 const isBrowser = (typeof window !== 'undefined')
-const getIns = require('./utils/disassembler').getIns
-const display = require('./utils/display')
+import { getIns } from './utils/disassembler'
+import display from './utils/display'
 
 const initMem = rom => {
   const mem = new Uint8Array(0xFFF)
@@ -23,8 +23,12 @@ const initMem = rom => {
     0xF0, 0x80, 0xF0, 0x80, 0x80  // 'F' at 0x4B
   ]
 
-  rom.forEach((b, i) => mem[i + 0x200] = b)
-  fonts.forEach((b, i) => mem[i] = b)
+  rom.forEach((b, i) => {
+    mem[i + 0x200] = b
+  })
+  fonts.forEach((b, i) => {
+    mem[i] = b
+  })
   return mem
 }
 
@@ -34,9 +38,8 @@ const ops = {
   // 0nnn - SYS addr
   // Jump to a machine code routine at nnn.
   '0nnn': (ins, c8) => {
-    let [, , addr] = ins
     c8.PC += 2
-    throw '0nnn'
+    throw Error('0nnn')
   },
   // 00E0 - CLS
   // Clear the display.
@@ -321,7 +324,6 @@ const ops = {
   }
 }
 
-
 const run = (rom, c8, conf) => {
   function mainLoop () {
     let loops = 5
@@ -344,16 +346,16 @@ const run = (rom, c8, conf) => {
       }
       loops--
     }
-    if (isBrowser) requestAnimationFrame(mainLoop)
+    if (isBrowser) window.requestAnimationFrame(mainLoop)
   }
   if (isBrowser) {
-    requestAnimationFrame(mainLoop)
+    window.requestAnimationFrame(mainLoop)
   } else {
     setInterval(() => mainLoop(), 1e3 / 60)
   }
 }
 
-module.exports = {
+export default {
   initMem,
   ops,
   load (rom, conf) {

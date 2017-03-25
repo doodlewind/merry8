@@ -10,7 +10,9 @@ let scr = Array.from({ length: 64 }, row => {
 })
 let ctx = null
 
-const clear = () => scr = scr.map(row => row.map(col => 0))
+const clear = () => {
+  scr = scr.map(row => row.map(col => 0))
+}
 
 const renderCanvas = () => {
   let pLen = _conf.width / 64
@@ -41,7 +43,6 @@ const init = (conf = {}) => {
   }
 }
 
-
 const draw = (x, y, n, c8) => {
   const pixels = c8.MEM.filter((p, i) => i >= c8.I && i < c8.I + n)
   for (let i = 0; i < 8; i++) {
@@ -59,7 +60,7 @@ const draw = (x, y, n, c8) => {
   return false
 }
 
-module.exports = {
+export default {
   init,
   clear,
   draw

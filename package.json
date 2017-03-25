@@ -4,16 +4,20 @@
   "version": "0.2.0",
   "keywords": ["chip-8", "emulator", "interpreter"],
   "scripts": {
-    "dev": "webpack --watch",
-    "prod": "webpack -p"
+    "dev": "cross-env NODE_ENV=development rollup -c --watch",
+    "prod": "cross-env NODE_ENV=production rollup -c"
   },
   "devDependencies": {
     "arraybuffer-equal": "^1.0.4",
-    "babel-core": "^6.18.2",
-    "babel-loader": "^6.2.7",
-    "babel-plugin-transform-es2015-object-super": "^6.8.0",
-    "babel-preset-es2015": "^6.18.0",
-    "webpack": "^1.13.3"
+    "babel-core": "^6.0.0",
+    "babel-plugin-external-helpers": "^6.0.0",
+    "babel-preset-es2015": "^6.0.0",
+    "cross-env": "^3.0.0",
+    "rollup": "^0.41.4",
+    "rollup-plugin-babel": "^2.7.1",
+    "rollup-plugin-json": "^2.1.0",
+    "rollup-plugin-uglify": "^1.0.1",
+    "rollup-watch": "^3.2.2"
   },
   "main": "app/index.js"
 }

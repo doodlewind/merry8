@@ -1,5 +1,5 @@
 // browser entry
-const main = require('./main')
+import main from './main'
 
 const conf = {
   el: '#app',
@@ -7,6 +7,7 @@ const conf = {
   speed: 1
 }
 
+/* eslint-disable no-undef */
 const xhr = new XMLHttpRequest()
 xhr.open('GET', '/roms/PONG', true)
 xhr.responseType = 'arraybuffer'

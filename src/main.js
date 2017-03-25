@@ -1,5 +1,5 @@
 // main wrapper of core emulator
-const chip8 = require('./chip8')
+import chip8 from './chip8'
 
 const load = (file, conf) => {
   chip8.load(file, conf)
@@ -11,6 +11,6 @@ if (typeof window !== 'undefined') {
   }
 }
 
-module.exports = {
+export default {
   load
 }

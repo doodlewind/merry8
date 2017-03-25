@@ -1,5 +1,7 @@
 // input 16bits ins 0x0000
-const getIns = (ins) => {
+
+/* eslint-disable brace-style */
+export function getIns (ins) {
   // 00E0 - CLS
   if (ins === 0x00E0) {
     return ['00E0', 'CLS']
@@ -151,7 +153,7 @@ const getIns = (ins) => {
   }
 }
 
-module.exports = {
+export default {
   getIns,
   loadAs16bits (fileArr) {
     // split 8bits int array into 16bits opcodes array
@@ -164,8 +166,9 @@ module.exports = {
   },
   parse (insArr) {
     insArr.forEach(ins => {
-      if (getIns(ins)[0] !== 'ERROR')
+      if (getIns(ins)[0] !== 'ERROR') {
         console.log(ins.toString(16), getIns(ins).map(s => s.toString(16)))
+      }
     })
   }
 }
