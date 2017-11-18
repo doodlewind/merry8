@@ -156,7 +156,7 @@ export function getIns (ins) {
 export default {
   getIns,
   loadAs16bits (fileArr) {
-    // split 8bits int array into 16bits opcodes array
+    // Split 8bits int array into 16bits opcodes array.
     return fileArr.reduce((acc, currItem, currIndex) => {
       const x = Math.floor(currIndex / 2)
       if (!acc[x]) acc[x] = []

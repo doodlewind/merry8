@@ -2,22 +2,33 @@
   "name": "merry8",
   "description": "Chip-8 emulator for web.",
   "version": "0.2.1",
-  "keywords": ["chip-8", "emulator", "interpreter"],
+  "keywords": [
+    "chip-8",
+    "emulator",
+    "interpreter"
+  ],
   "scripts": {
+    "demo": "http-server . -s -p 9001 & npm run dev",
     "dev": "cross-env NODE_ENV=development rollup -c --watch",
-    "prod": "cross-env NODE_ENV=production rollup -c"
+    "build": "cross-env NODE_ENV=production rollup -c",
+    "test": "babel-node --presets es2015 test/index.js"
   },
   "devDependencies": {
     "arraybuffer-equal": "^1.0.4",
+    "babel-cli": "^6.26.0",
     "babel-core": "^6.0.0",
     "babel-plugin-external-helpers": "^6.0.0",
+    "babel-polyfill": "^6.26.0",
     "babel-preset-es2015": "^6.0.0",
+    "babel-register": "^6.26.0",
     "cross-env": "^3.0.0",
+    "http-server": "^0.10.0",
     "rollup": "^0.41.4",
     "rollup-plugin-babel": "^2.7.1",
     "rollup-plugin-json": "^2.1.0",
     "rollup-plugin-uglify": "^1.0.1",
     "rollup-watch": "^3.2.2"
   },
-  "main": "app/index.js"
+  "license": "MIT",
+  "main": "dist/bundle.js"
 }

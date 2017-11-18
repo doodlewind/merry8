@@ -1,8 +1,7 @@
-const isBrowser = (typeof window !== 'undefined')
 import { getIns } from './utils/disassembler'
 import display from './utils/display'
 
-const initMem = rom => {
+export const initMem = rom => {
   const mem = new Uint8Array(0xFFF)
   const fonts = [
     0xF0, 0x90, 0x90, 0x90, 0xF0, // '0' at 0x00
@@ -34,7 +33,7 @@ const initMem = rom => {
 
 const read = (mem, pc) => mem[pc] << 8 | mem[pc + 1]
 
-const ops = {
+export const ops = {
   // 0nnn - SYS addr
   // Jump to a machine code routine at nnn.
   '0nnn': (ins, c8) => {
@@ -346,24 +345,18 @@ const run = (rom, c8, conf) => {
       }
       loops--
     }
-    if (isBrowser) window.requestAnimationFrame(mainLoop)
-  }
-  if (isBrowser) {
     window.requestAnimationFrame(mainLoop)
-  } else {
-    setInterval(() => mainLoop(), 1e3 / 60)
   }
+  window.requestAnimationFrame(mainLoop)
 }
 
 export default {
-  initMem,
-  ops,
   load (rom, conf) {
     const c8 = {
       MEM: initMem(rom),
       V: new Uint8Array(16),
       STACK: new Uint16Array(16),
-      KEYS: Array.from({ length: 16 }, k => false),
+      KEYS: Array.from({ length: 16 }, () => false),
       I: 0x0000,
       PC: 0x0200,
       SP: 0x00,

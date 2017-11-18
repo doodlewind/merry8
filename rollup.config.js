@@ -5,9 +5,9 @@ import uglify from 'rollup-plugin-uglify'
 const plugins = [json(), babel()]
 if (process.env.NODE_ENV === 'production') plugins.push(uglify())
 
-export default({
+export default {
   entry: 'src/entry.js',
   format: 'iife',
-  plugins: plugins,
-  dest: 'pages/dist/bundle.js'
-})
+  plugins,
+  dest: 'dist/bundle.js'
+}

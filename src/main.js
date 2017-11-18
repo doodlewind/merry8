@@ -5,11 +5,7 @@ const load = (file, conf) => {
   chip8.load(file, conf)
 }
 
-if (typeof window !== 'undefined') {
-  window.chip8 = {
-    load
-  }
-}
+window.chip8 = { load }
 
 export default {
   load

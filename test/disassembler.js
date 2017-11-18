@@ -1,5 +1,5 @@
-const assert = require('assert')
-const getIns = require('../src/utils/disassembler').getIns
+import assert from 'assert'
+import { getIns } from '../src/utils/disassembler'
 
 module.exports = () => {
   assert.deepEqual(getIns(0x1234), ['1nnn', 'JP', 0x234], '1nnn')

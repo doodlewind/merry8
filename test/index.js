@@ -1,7 +1,9 @@
-const loader = require('../src/utils/loader')
-const disassembler = require('../src/utils/disassembler')
+import loader from './loader'
+import disassembler from '../src/utils/disassembler'
+import disassemblerTest from './disassembler'
+import chip8Test from './chip8'
 
 loader.load('PONG').then(file => {
-  require('./disassembler')()
-  require('./chip8')(disassembler.loadAs16bits(file))
+  disassemblerTest()
+  chip8Test(disassembler.loadAs16bits(file))
 }).catch(e => console.log(e))

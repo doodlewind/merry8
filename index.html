@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Merry8 - PONG</title>
+  <style>
+    .btn-wrapper {
+      width: 500px;
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+    }
+    .btn-group {
+      text-align: center;
+    }
+    button {
+      display: block;
+      height: 40px;
+      width: 80px;
+      margin: 10px 0;
+      border: 1px lightgrey solid;
+      background-color: white;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="app"></canvas>
+  <div class="btn-wrapper">
+    <div class="btn-group">
+      <button onclick="press(1)">↑</button>
+      <button onclick="press(4)">↓</button>
+    </div>
+    <div class="btn-group">
+      <button onclick="press(12)">↑</button>
+      <button onclick="press(13)">↓</button>
+    </div>
+  </div>
+  <script src="dist/bundle.js"></script>
+  <script>
+    function press(key) {
+      window.KEYS[key] = true
+      setTimeout(() => {
+        window.KEYS[key] = false
+      }, 100);
+    }
+  </script>
+</body>
+</html>
