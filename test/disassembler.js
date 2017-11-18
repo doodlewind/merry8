@@ -1,7 +1,7 @@
 import assert from 'assert'
 import { getIns } from '../src/utils/disassembler'
 
-module.exports = () => {
+export default function () {
   assert.deepEqual(getIns(0x1234), ['1nnn', 'JP', 0x234], '1nnn')
   assert.deepEqual(getIns(0x3721), ['3xkk', 'SE', 0x7, 0x21], '3xkk')
   assert.deepEqual(getIns(0x4ABC), ['4xkk', 'SNE', 0xA, 0xBC], '4xkk')

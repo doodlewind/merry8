@@ -6,8 +6,9 @@ const plugins = [json(), babel()]
 if (process.env.NODE_ENV === 'production') plugins.push(uglify())
 
 export default {
-  entry: 'src/entry.js',
+  entry: 'src/index.js',
   format: 'iife',
+  moduleName: 'merry8',
   plugins,
   dest: 'dist/bundle.js'
 }

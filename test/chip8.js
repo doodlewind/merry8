@@ -27,7 +27,7 @@ const testIns = (ins, prevState, nextState) => {
   assert.deepEqual(prevState, nextState, ins[0])
 }
 
-module.exports = rom => {
+export default function (rom) {
   testIns(['2nnn', 'CALL', 0x2D4], c8(rom), {
     MEM: initMem(rom),
     V: new Uint8Array(16),

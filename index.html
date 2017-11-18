@@ -36,13 +36,28 @@
     </div>
   </div>
   <script src="dist/bundle.js"></script>
-  <script>
-    function press(key) {
-      window.KEYS[key] = true
-      setTimeout(() => {
-        window.KEYS[key] = false
-      }, 100);
-    }
-  </script>
+<script>
+// Load ROM with XHR.
+const xhr = new XMLHttpRequest()
+xhr.open('GET', '/roms/PONG', true)
+xhr.responseType = 'arraybuffer'
+xhr.onload = () => {
+  const rom = new Uint8Array(xhr.response)
+  window.merry8.load(rom, {
+    el: '#app',
+    width: 500,
+    speed: 1
+  })
+}
+xhr.send()
+
+// Emulate default key press.
+function press(key) {
+  window.KEYS[key] = true
+  setTimeout(() => {
+    window.KEYS[key] = false
+  }, 100)
+}
+</script>
 </body>
 </html>
