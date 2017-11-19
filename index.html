@@ -35,24 +35,26 @@
       <button onclick="press(13)">↓</button>
     </div>
   </div>
-  <script src="dist/bundle.js"></script>
+  <script src="dist/merry8.js"></script>
 <script>
 // Load ROM with XHR.
-const xhr = new XMLHttpRequest()
+var xhr = new XMLHttpRequest()
 xhr.open('GET', '/roms/PONG', true)
 xhr.responseType = 'arraybuffer'
 xhr.onload = () => {
-  const rom = new Uint8Array(xhr.response)
-  window.merry8.load(rom, {
+  var rom = new Uint8Array(xhr.response)
+
+  var emulator = new Merry8(rom, {
     el: '#app',
     width: 500,
     speed: 1
   })
+  emulator.run()
 }
 xhr.send()
 
 // Emulate default key press.
-function press(key) {
+function press (key) {
   window.KEYS[key] = true
   setTimeout(() => {
     window.KEYS[key] = false

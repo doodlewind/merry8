@@ -1,4 +1,3 @@
-const isBrowser = (typeof window !== 'undefined')
 let _conf = {
   el: '#app',
   width: 500,
@@ -23,24 +22,20 @@ const renderCanvas = () => {
 }
 
 const init = (conf = {}) => {
-  if (typeof window !== 'undefined') {
-    _conf = Object.assign(_conf, conf)
-    const style = document.createElement('style')
-    document.head.appendChild(style)
-    style.sheet.insertRule(`canvas {
-      margin: auto;
-      display: block;
-      width: ${_conf.width}px;
-      height: ${_conf.width / 2}px;
-    }`, 0)
-    const canvas = document.querySelector(conf.el)
-    canvas.setAttribute('width', `${_conf.width}px`)
-    canvas.setAttribute('height', `${_conf.width / 2}px`)
-    ctx = canvas.getContext('2d')
-    renderCanvas()
-  } else {
-    console.log('Node ENV not supported')
-  }
+  _conf = Object.assign(_conf, conf)
+  const style = document.createElement('style')
+  document.head.appendChild(style)
+  style.sheet.insertRule(`canvas {
+    margin: auto;
+    display: block;
+    width: ${_conf.width}px;
+    height: ${_conf.width / 2}px;
+  }`, 0)
+  const canvas = document.querySelector(conf.el)
+  canvas.setAttribute('width', `${_conf.width}px`)
+  canvas.setAttribute('height', `${_conf.width / 2}px`)
+  ctx = canvas.getContext('2d')
+  renderCanvas()
 }
 
 const draw = (x, y, n, c8) => {
@@ -49,14 +44,14 @@ const draw = (x, y, n, c8) => {
     for (let j = 0; j < n; j++) {
       let _x = i + x > 63 ? 127 - (i + x) : (i + x)
       let _y = j + y > 31 ? 63 - (j + y) : (j + y)
-      // HACK on offest
+      // HACK correct screen offset by mutating indices.
       scr[_x - 1][_y] = scr[_x - 1][_y] ^ (pixels[j] >> (7 - i) & 1)
     }
   }
-  if (isBrowser) renderCanvas()
-  else console.log(`Drawing at (${x}, ${y}) with ${n} bytes`)
-  // return if collision exists
-  // debugger
+  renderCanvas()
+  if (window.DEBUG) {
+    console.log(`Drawing at (${x}, ${y}) with ${n} bytes`)
+  }
   return false
 }
 

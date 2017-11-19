@@ -1,39 +1,6 @@
-import { getIns } from './utils/disassembler'
 import display from './utils/display'
 
-export const initMem = rom => {
-  const mem = new Uint8Array(0xFFF)
-  const fonts = [
-    0xF0, 0x90, 0x90, 0x90, 0xF0, // '0' at 0x00
-    0x20, 0x60, 0x20, 0x20, 0x70, // '1' at 0x05
-    0xF0, 0x10, 0xF0, 0x80, 0xF0, // '2' at 0x0A
-    0xF0, 0x10, 0xF0, 0x10, 0xF0, // '3' at 0x0F
-    0x90, 0x90, 0xF0, 0x10, 0x10, // '4' at 0x14
-    0xF0, 0x80, 0xF0, 0x10, 0xF0, // '5' at 0x19
-    0xF0, 0x80, 0xF0, 0x90, 0xF0, // '6' at 0x1E
-    0xF0, 0x10, 0x20, 0x40, 0x40, // '7' at 0x23
-    0xF0, 0x90, 0xF0, 0x90, 0xF0, // '8' at 0x28
-    0xF0, 0x90, 0xF0, 0x10, 0xF0, // '9' at 0x2D
-    0xF0, 0x90, 0xF0, 0x90, 0x90, // 'A' at 0x32
-    0xE0, 0x90, 0xE0, 0x90, 0xE0, // 'B' at 0x37
-    0xF0, 0x80, 0x80, 0x80, 0xF0, // 'C' at 0x3C
-    0xE0, 0x90, 0x90, 0x90, 0xE0, // 'D' at 0x41
-    0xF0, 0x80, 0xF0, 0x80, 0xF0, // 'E' at 0x46
-    0xF0, 0x80, 0xF0, 0x80, 0x80  // 'F' at 0x4B
-  ]
-
-  rom.forEach((b, i) => {
-    mem[i + 0x200] = b
-  })
-  fonts.forEach((b, i) => {
-    mem[i] = b
-  })
-  return mem
-}
-
-const read = (mem, pc) => mem[pc] << 8 | mem[pc + 1]
-
-export const ops = {
+const ops = {
   // 0nnn - SYS addr
   // Jump to a machine code routine at nnn.
   '0nnn': (ins, c8) => {
@@ -323,48 +290,4 @@ export const ops = {
   }
 }
 
-const run = (rom, c8, conf) => {
-  function mainLoop () {
-    let loops = 5
-    c8.DELAY = Math.max(0, c8.DELAY - 1)
-    while (loops > 0) {
-      const ins = getIns(read(c8.MEM, c8.PC))
-      try {
-        ops[ins[0]](ins, c8)
-      } catch (e) {
-        console.log('\nLast state:')
-        console.log({
-          INS: ins,
-          V: Array.from(c8.V).map(v => v.toString(16)).join(' '),
-          I: '0x' + c8.I.toString(16),
-          PC: '0x' + c8.PC.toString(16),
-          SP: c8.SP,
-          STACK: c8.STACK
-        })
-        throw e
-      }
-      loops--
-    }
-    window.requestAnimationFrame(mainLoop)
-  }
-  window.requestAnimationFrame(mainLoop)
-}
-
-export default {
-  load (rom, conf) {
-    const c8 = {
-      MEM: initMem(rom),
-      V: new Uint8Array(16),
-      STACK: new Uint16Array(16),
-      KEYS: Array.from({ length: 16 }, () => false),
-      I: 0x0000,
-      PC: 0x0200,
-      SP: 0x00,
-      DELAY: 0x00,
-      SOUND: 0x00
-    }
-    display.init(conf)
-    if (typeof window !== 'undefined') window.KEYS = c8.KEYS
-    run(rom, c8, conf)
-  }
-}
+export default ops

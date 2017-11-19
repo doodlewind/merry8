@@ -8,7 +8,7 @@ if (process.env.NODE_ENV === 'production') plugins.push(uglify())
 export default {
   entry: 'src/index.js',
   format: 'iife',
-  moduleName: 'merry8',
+  moduleName: 'Merry8',
   plugins,
-  dest: 'dist/bundle.js'
+  dest: 'dist/merry8.js'
 }

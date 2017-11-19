@@ -1,10 +1,11 @@
 import assert from 'assert'
 import isEqual from 'arraybuffer-equal'
-import { initMem, ops } from '../src/chip8'
+import initMemory from '../src/utils/init-memory'
+import ops from '../src/ops'
 
 const c8 = rom => {
   return {
-    MEM: initMem(rom),
+    MEM: initMemory(rom),
     STACK: new Uint16Array(16),
     V: new Uint8Array(16),
     I: 0x0000,
@@ -29,7 +30,7 @@ const testIns = (ins, prevState, nextState) => {
 
 export default function (rom) {
   testIns(['2nnn', 'CALL', 0x2D4], c8(rom), {
-    MEM: initMem(rom),
+    MEM: initMemory(rom),
     V: new Uint8Array(16),
     STACK: new Uint16Array([
       0x200, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
@@ -41,7 +42,7 @@ export default function (rom) {
     SOUND: 0x00
   })
   testIns(['6xkk', 'LD', 0xA, 0x02], c8(rom), {
-    MEM: initMem(rom),
+    MEM: initMemory(rom),
     STACK: new Uint16Array(16),
     V: new Uint8Array([
       /**
@@ -55,7 +56,7 @@ export default function (rom) {
     SOUND: 0x00
   })
   testIns(['Annn', 'LD', 0x123], c8(rom), {
-    MEM: initMem(rom),
+    MEM: initMemory(rom),
     V: new Uint8Array(16),
     STACK: new Uint16Array(16),
     I: 0x0123,
