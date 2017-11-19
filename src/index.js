@@ -1,5 +1,5 @@
 import { getIns } from './utils/disassembler'
-import display from './utils/display'
+import View from './utils/view'
 import ops from './ops'
 import warning from './utils/warning'
 import initMemory from './utils/init-memory'
@@ -7,7 +7,6 @@ import initMemory from './utils/init-memory'
 export default class Merry8 {
   constructor (rom, conf) {
     this.rom = rom
-    this.conf = conf
     this.c8 = {
       MEM: initMemory(this.rom),
       V: new Uint8Array(16),
@@ -24,14 +23,12 @@ export default class Merry8 {
       DELAY: 0x00,
       SOUND: 0x00
     }
-
-    display.init(this.conf)
-    // FIXME mutate global env.
-    if (typeof window !== 'undefined') window.KEYS = this.c8.KEYS
+    this.view = View(conf)
   }
 
+  // Start emulator main loop.
   run = () => {
-    const { c8 } = this
+    const { c8, view } = this
     // Emutator main loop. To run the emulator in accpectable speed,
     // most of times we "freeze" the cpu, only runs `insCount` instructions
     // on each loop.
@@ -45,12 +42,19 @@ export default class Merry8 {
         const ins = getIns(MEM[PC] << 8 | MEM[PC + 1])
         try {
           // Perform operation according to instruction.
-          ops[ins[0]](ins, c8)
+          ops[ins[0]](ins, c8, view)
         } catch (err) { warning(err, ins, c8) }
         insCount--
       }
       window.requestAnimationFrame(mainLoop)
     }
     window.requestAnimationFrame(mainLoop)
+  }
+
+  // Emulate a key press.
+  press = (key) => {
+    const { KEYS } = this.c8
+    KEYS[key] = true
+    setTimeout(() => { KEYS[key] = false }, 100)
   }
 }

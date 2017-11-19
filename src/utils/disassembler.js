@@ -1,5 +1,3 @@
-// input 16bits ins 0x0000
-
 /* eslint-disable brace-style */
 export function getIns (ins) {
   // 00E0 - CLS
@@ -155,8 +153,8 @@ export function getIns (ins) {
 
 export default {
   getIns,
+  // Split 8bits int array into 16bits opcodes array.
   loadAs16bits (fileArr) {
-    // Split 8bits int array into 16bits opcodes array.
     return fileArr.reduce((acc, currItem, currIndex) => {
       const x = Math.floor(currIndex / 2)
       if (!acc[x]) acc[x] = []

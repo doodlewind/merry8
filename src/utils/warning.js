@@ -1,4 +1,4 @@
-export default function warn (err, ins, c8) {
+export default function warning (err, ins, c8) {
   console.log('\nLast state:')
   console.log({
     INS: ins,

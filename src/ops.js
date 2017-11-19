@@ -1,5 +1,3 @@
-import display from './utils/display'
-
 const ops = {
   // 0nnn - SYS addr
   // Jump to a machine code routine at nnn.
@@ -8,9 +6,9 @@ const ops = {
     throw Error('0nnn')
   },
   // 00E0 - CLS
-  // Clear the display.
-  '00E0': (ins, c8) => {
-    display.clear()
+  // Clear screen.
+  '00E0': (ins, c8, view) => {
+    view.clear()
     c8.PC += 2
     return c8
   },
@@ -186,9 +184,9 @@ const ops = {
   // Dxyn - DRW Vx, Vy, nibble
   // Display n-byte sprite starting at memory location I at (Vx, Vy),
   // set VF = collision.
-  'Dxyn': (ins, c8) => {
+  'Dxyn': (ins, c8, view) => {
     const [, , x, y, n] = ins
-    c8.V[0xF] = display.draw(c8.V[x], c8.V[y], n, c8)
+    c8.V[0xF] = view.draw(c8.V[x], c8.V[y], n, c8)
     c8.PC += 2
     return c8
   },

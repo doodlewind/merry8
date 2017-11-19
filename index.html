@@ -27,12 +27,12 @@
   <canvas id="app"></canvas>
   <div class="btn-wrapper">
     <div class="btn-group">
-      <button onclick="press(1)">↑</button>
-      <button onclick="press(4)">↓</button>
+      <button onclick="emulator.press(1)">↑</button>
+      <button onclick="emulator.press(4)">↓</button>
     </div>
     <div class="btn-group">
-      <button onclick="press(12)">↑</button>
-      <button onclick="press(13)">↓</button>
+      <button onclick="emulator.press(12)">↑</button>
+      <button onclick="emulator.press(13)">↓</button>
     </div>
   </div>
   <script src="dist/merry8.js"></script>
@@ -43,23 +43,13 @@ xhr.open('GET', '/roms/PONG', true)
 xhr.responseType = 'arraybuffer'
 xhr.onload = () => {
   var rom = new Uint8Array(xhr.response)
-
-  var emulator = new Merry8(rom, {
+  window.emulator = new Merry8(rom, {
     el: '#app',
-    width: 500,
-    speed: 1
+    width: 500
   })
-  emulator.run()
+  window.emulator.run()
 }
 xhr.send()
-
-// Emulate default key press.
-function press (key) {
-  window.KEYS[key] = true
-  setTimeout(() => {
-    window.KEYS[key] = false
-  }, 100)
-}
 </script>
 </body>
 </html>
