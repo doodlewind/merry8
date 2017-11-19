@@ -1,7 +1,7 @@
 {
   "name": "merry8",
   "description": "Chip-8 emulator for web.",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "keywords": [
     "chip-8",
     "emulator",
