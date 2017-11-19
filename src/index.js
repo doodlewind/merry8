@@ -29,7 +29,7 @@ export default class Merry8 {
   // Start emulator main loop.
   run = () => {
     const { c8, view } = this
-    // Emutator main loop. To run the emulator in accpectable speed,
+    // Emulator main loop. To run the emulator in accpectable speed,
     // most of times we "freeze" the cpu, only runs `insCount` instructions
     // on each loop.
     function mainLoop () {

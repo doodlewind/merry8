@@ -3,28 +3,34 @@
 <head>
   <meta charset="UTF-8">
   <title>Merry8 - PONG</title>
-  <style>
-    .btn-wrapper {
-      width: 500px;
-      margin: auto;
-      display: flex;
-      justify-content: space-between;
-    }
-    .btn-group {
-      text-align: center;
-    }
-    button {
-      display: block;
-      height: 40px;
-      width: 80px;
-      margin: 10px 0;
-      border: 1px lightgrey solid;
-      background-color: white;
-    }
-  </style>
+<style>
+.app-wrapper {
+  width: 500px;
+  margin: auto;
+}
+.btn-wrapper {
+  width: 500px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+}
+.btn-group {
+  text-align: center;
+}
+button {
+  display: block;
+  height: 40px;
+  width: 80px;
+  margin: 10px 0;
+  border: 1px lightgrey solid;
+  background-color: white;
+}
+</style>
 </head>
 <body>
-  <canvas id="app"></canvas>
+  <div class="app-wrapper">
+    <canvas id="app"></canvas>
+  </div>
   <div class="btn-wrapper">
     <div class="btn-group">
       <button onclick="emulator.press(1)">↑</button>
@@ -39,7 +45,7 @@
 <script>
 // Load ROM with XHR.
 var xhr = new XMLHttpRequest()
-xhr.open('GET', '/roms/PONG', true)
+xhr.open('GET', 'roms/PONG', true)
 xhr.responseType = 'arraybuffer'
 xhr.onload = () => {
   var rom = new Uint8Array(xhr.response)
