@@ -4,7 +4,7 @@ Chip-8 emulator for web.
 ## API
 Besides the demo, you can simply `npm install merry8` and run it in your own project!
 
-``` js
+```
 import Merry8 from 'merry8'
 
 // Provide chip-8 rom, canvas element and its default width.
