@@ -24,10 +24,12 @@ export default class Merry8 {
       SOUND: 0x00
     }
     this.view = View(conf)
+    this.run = this.run.bind(this)
+    this.press = this.press.bind(this)
   }
 
   // Start emulator main loop.
-  run = () => {
+  run () {
     const { c8, view } = this
     // Emulator main loop. To run the emulator in accpectable speed,
     // most of times we "freeze" the cpu, only runs `insCount` instructions
@@ -52,7 +54,7 @@ export default class Merry8 {
   }
 
   // Emulate a key press.
-  press = (key) => {
+  press (key) {
     const { KEYS } = this.c8
     KEYS[key] = true
     setTimeout(() => { KEYS[key] = false }, 100)
